@@ -1,12 +1,56 @@
-{% extends 'main/base.html' %}
+{% extends "main/base.html" %}
 
 {% block title %}
-Последние вакансии
+    Последние вакансии
 {% endblock %}
 
 {% block content %}
+    <h1>Последние вакансии</h1>
+    {% for vacancy in vacancies %}
+        <br>
+        <br>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{ vacancy.name }}</h4>
+                <p class="card-text">
+                    {{ vacancy.description|safe }}
+                <p><strong>Навыки</strong></p>
 
+                {% for skill in vacancy.key_skills %}
+                    {{ skill.name }},
+                {% endfor %}
+                <br>
+                <br>
+                <p><strong>Компания</strong></p>
 
+                {{ vacancy.employer.name }}
+                <br>
+                <br>
+                <p><strong>Оклад</strong></p>
 
+                {% if vacancy.salary %}
+                    {% if vacancy.salary.from %}От {{ vacancy.salary.from }}{% endif %}
+                    {% if vacancy.salary.to %}{% if vacancy.salary.from %}до {{ vacancy.salary.to }}{% else %}До
+                        {{ vacancy.salary.to }}{% endif %}{% endif %}
+                    {{ vacancy.salary.currency }}
+                {% else %}
+                    Нет данных
+                {% endif %}
+                <br>
+                <br>
+                <p><strong>Регион</strong></p>
+
+                {{ vacancy.area.name }}
+                <br>
+                <br>
+                <p><strong>Дата публикации</strong></p>
+
+                {{ vacancy.published_at }}
+                </p>
+                <a href={{ vacancy.alternate_url }} class="btn btn-primary btn-sm">Перейти к вакансии</a>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
 
 {% endblock %}
